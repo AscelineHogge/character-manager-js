@@ -8,17 +8,17 @@ async function lesHeros() {
         const target = document.querySelector("#target");
 
 
-        data.forEach(({name, shortDescription, image}) => {
+        data.forEach(({name, shortDescription}) => {
             const copy = temp.cloneNode(true).content;
 
-            copy.querySelector("#name").innerHTML = name;
-            copy.querySelector("#signaletics").innerHTML = shortDescription;
-            copy.querySelector("#image").src = image;
+            copy.querySelector(".name").innerText = name;
+            copy.querySelector(".signaletics").innerText = shortDescription;
+            //copy.querySelector(".image").src = image;
 
             target.appendChild(copy);
-        });
+        })
 
-    } catch(error) {
+    }catch(error) {
         console.error(error);
     }
 }
