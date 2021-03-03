@@ -48,26 +48,44 @@
     // **** View Heroes ****
 
     function blind() {
-        const buttonView = document.querySelector(".card");
+        const buttonView = document.getElementsByClassName("card");
 
-        const longDescriptionCard = document.querySelector(".description");
-        const nameCard = document.querySelector(".name");
-        const signaleticsCard = document.querySelector(".signaletics");
-        const imgCard = document.querySelector(".image");
+        const nameCard = document.getElementsByClassName("name");
+        const signaleticsCard = document.getElementsByClassName("signaletics");
+        const longDescriptionCard = document.getElementsByClassName("description");
+        const imgCard = document.getElementsByClassName("image");
 
-        for(let i = 0; i > buttonView.length; i++) {
-            buttonView[i].addEventListener("click", () => {
-                let nameModal = document.querySelector(".modal-title");
-                let signaleticsModal = document.querySelector(".signaleticsModal");
-                let descriptionModal = document.querySelector(".cardModal");
-                let imgModal = document.querySelector(".imgModal");
+        for (let i = 0; i < buttonView.length; i++) {
+            buttonView[i].addEventListener('click', function () {
 
-                nameModal.innerText = nameCard[i].innerText;
-                signaleticsModal.innerText = signaleticsCard[i].innerText;
-                descriptionModal.innerText = longDescriptionCard[i].innerText;
-                imgModal.src = imgCard[i].src;
-            })
+                let modalName = document.getElementById("exampleModalLabel");
+                let modalShortDescription = document.getElementById("signaletics-modal");
+                let modalLongDescription = document.getElementById("des-modal");
+                let modalImage = document.getElementById("img-modal");
+
+                modalName.innerText = nameCard[i].innerText;
+                modalShortDescription.innerText = signaleticsCard[i].innerText;
+                modalLongDescription.innerText = longDescriptionCard[i].innerText;
+                modalImage.src = imgCard[i].src;
+            });
         }
+
+        // for(let i = 0; i > buttonView.length; i++) {
+        //     buttonView[i].addEventListener("click", () => {
+                
+        //         let nameModal = document.querySelector(".modal-title");
+        //         let signaleticsModal = document.querySelector(".signaleticsModal");
+        //         let descriptionModal = document.querySelector(".cardModal");
+        //         let imgModal = document.querySelector(".imgModal");
+
+        //         nameModal.innerText = nameCard[i].innerText;
+        //         signaleticsModal.innerText = signaleticsCard[i].innerText;
+        //         descriptionModal.innerText = longDescriptionCard[i].innerText;
+        //         imgModal.src = imgCard[i].src;
+
+        //         console.log(nameModal, signaleticsModal, descriptionModal);
+        //     })
+        // }
     }
 
     apiChar.then(() => {
