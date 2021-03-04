@@ -2,6 +2,7 @@
     //   **** Get api and show elements ****
 
     const tabId = new Array();
+    const allVal = Array.from(document.querySelectorAll("input"));
 
     // **** Fetch our API ****
 
@@ -16,8 +17,6 @@
             console.error(error);
         }
     }
-    
-    let apiChar = fetchCharacter();
 
     // **** Display Character ****
 
@@ -40,11 +39,6 @@
         console.log(tabId);
     }
 
-    apiChar.then(data => {
-        viewCharacter(data);
-        console.log(data);
-    })
-
     // **** View Heroes ****
 
     function blind() {
@@ -55,42 +49,60 @@
         const longDescriptionCard = document.getElementsByClassName("description");
         const imgCard = document.getElementsByClassName("image");
 
-        for (let i = 0; i < buttonView.length; i++) {
-            buttonView[i].addEventListener('click', function () {
-
-                let modalName = document.getElementById("exampleModalLabel");
-                let modalShortDescription = document.getElementById("signaletics-modal");
-                let modalLongDescription = document.getElementById("des-modal");
-                let modalImage = document.getElementById("img-modal");
-
-                modalName.innerText = nameCard[i].innerText;
-                modalShortDescription.innerText = signaleticsCard[i].innerText;
-                modalLongDescription.innerText = longDescriptionCard[i].innerText;
-                modalImage.src = imgCard[i].src;
-            });
-        }
-
-        // for(let i = 0; i > buttonView.length; i++) {
-        //     buttonView[i].addEventListener("click", () => {
+        for(let i = 0; i < buttonView.length; i++) {
+            buttonView[i].addEventListener("click", () => {
                 
-        //         let nameModal = document.querySelector(".modal-title");
-        //         let signaleticsModal = document.querySelector(".signaleticsModal");
-        //         let descriptionModal = document.querySelector(".cardModal");
-        //         let imgModal = document.querySelector(".imgModal");
+                let nameModal = document.querySelector(".modal-title");
+                let signaleticsModal = document.querySelector(".signaleticsModal");
+                let descriptionModal = document.querySelector(".cardModal");
+                let imgModal = document.querySelector(".imgModal");
 
-        //         nameModal.innerText = nameCard[i].innerText;
-        //         signaleticsModal.innerText = signaleticsCard[i].innerText;
-        //         descriptionModal.innerText = longDescriptionCard[i].innerText;
-        //         imgModal.src = imgCard[i].src;
+                nameModal.innerText = nameCard[i].innerText;
+                signaleticsModal.innerText = signaleticsCard[i].innerText;
+                descriptionModal.innerText = longDescriptionCard[i].innerText;
+                imgModal.src = imgCard[i].src;
 
-        //         console.log(nameModal, signaleticsModal, descriptionModal);
-        //     })
-        // }
+                console.log(nameModal, signaleticsModal, descriptionModal);
+            })
+        }
     }
 
-    apiChar.then(() => {
-        blind();
-    })
+    // **** Create a character ****
+
+    function create() {
+        let image = "";
+        document.querySelector("#inputImg").addEventListener("change", (event) => {
+            const fileList = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                image = reader.result.replace('data:', '').replace(/^.+,/, '');
+            };
+            reader.readAsDataURL(fileList);
+        });
+
+        document.querySelector("#addBtn").addEventListener("click", async () => {
+            const values = allVal.map(({value}) => value.trim());
+            const [name, shortDescription, description] = values;
+            const post = await fetch("https://character-database.becode.xyz/characters", {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                },
+                body : JSON.stringify({
+                    name,
+                    shortDescription,
+                    description,
+                    image,
+                })
+            })
+            document.location.reload();
+
+            if(!post.ok) {
+                console.error(post.status);
+            }
+        })
+    }
 
     // **** Erased a character ****    
 
@@ -129,7 +141,12 @@
         })
     }
 
-    apiChar.then(() => {
+    let apiChar = fetchCharacter();
+
+    apiChar.then(data => {
+        viewCharacter(data);
+        blind();
+        create();
         erased();
     })
 })();
