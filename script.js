@@ -42,16 +42,15 @@
     // **** View Heroes ****
 
     function blind() {
-        const buttonView = document.getElementsByClassName("card");
+        const buttonView = document.getElementsByClassName("cardBtn");
 
         const nameCard = document.getElementsByClassName("name");
         const signaleticsCard = document.getElementsByClassName("signaletics");
         const longDescriptionCard = document.getElementsByClassName("description");
         const imgCard = document.getElementsByClassName("image");
 
-        for(let i = 0; i < buttonView.length; i++) {
-            buttonView[i].addEventListener("click", () => {
-                
+        Array.from(document.querySelectorAll(".cardBtn")).forEach((btn, i) => {
+            btn.addEventListener("click", () => {
                 let nameModal = document.querySelector(".modal-title");
                 let signaleticsModal = document.querySelector(".signaleticsModal");
                 let descriptionModal = document.querySelector(".cardModal");
@@ -62,24 +61,33 @@
                 descriptionModal.innerText = longDescriptionCard[i].innerText;
                 imgModal.src = imgCard[i].src;
 
-                console.log(nameModal, signaleticsModal, descriptionModal);
+                console.log(i);
+                console.log(nameModal.innerText, signaleticsModal.innerText, descriptionModal.innerText);
             })
-        }
+        });
+
+        // for(let i = 0; i < buttonView.length; i++) {
+        //     buttonView[i].addEventListener("click", () => {
+                
+        //         let nameModal = document.querySelector(".modal-title");
+        //         let signaleticsModal = document.querySelector(".signaleticsModal");
+        //         let descriptionModal = document.querySelector(".cardModal");
+        //         let imgModal = document.querySelector(".imgModal");
+
+        //         nameModal.innerText = nameCard[i].innerText;
+        //         signaleticsModal.innerText = signaleticsCard[i].innerText;
+        //         descriptionModal.innerText = longDescriptionCard[i].innerText;
+        //         imgModal.src = imgCard[i].src;
+
+        //         console.log(i);
+        //         console.log(nameModal.innerText, signaleticsModal.innerText, descriptionModal.innerText);
+        //     })
+        // }
     }
 
     // **** Create a character ****
 
     function create() {
-        let image = "";
-        document.querySelector("#inputImg").addEventListener("change", (event) => {
-            const fileList = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                image = reader.result.replace('data:', '').replace(/^.+,/, '');
-            };
-            reader.readAsDataURL(fileList);
-        });
 
         document.querySelector("#addBtn").addEventListener("click", async () => {
             const values = allVal.map(({value}) => value.trim());
@@ -102,6 +110,12 @@
                 console.error(post.status);
             }
         })
+    }
+
+    // **** Edit a Character ****
+
+    function edit() {
+        
     }
 
     // **** Erased a character ****    
@@ -142,11 +156,26 @@
     }
 
     let apiChar = fetchCharacter();
+    let image = "";
+    document.querySelector("#inputImg").addEventListener("change", (event) => {
+        const fileList = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            image = reader.result.replace('data:', '').replace(/^.+,/, '');
+            console.log(image);
+        };
+        reader.readAsDataURL(fileList);
+    });
 
     apiChar.then(data => {
         viewCharacter(data);
-        blind();
         create();
+        edit();
         erased();
+    })
+
+    apiChar.then(() => {
+        blind();
     })
 })();
