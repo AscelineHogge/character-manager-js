@@ -60,35 +60,13 @@
                 signaleticsModal.innerText = signaleticsCard[i].innerText;
                 descriptionModal.innerText = longDescriptionCard[i].innerText;
                 imgModal.src = imgCard[i].src;
-
-                console.log(i);
-                console.log(nameModal.innerText, signaleticsModal.innerText, descriptionModal.innerText);
             })
         });
-
-        // for(let i = 0; i < buttonView.length; i++) {
-        //     buttonView[i].addEventListener("click", () => {
-                
-        //         let nameModal = document.querySelector(".modal-title");
-        //         let signaleticsModal = document.querySelector(".signaleticsModal");
-        //         let descriptionModal = document.querySelector(".cardModal");
-        //         let imgModal = document.querySelector(".imgModal");
-
-        //         nameModal.innerText = nameCard[i].innerText;
-        //         signaleticsModal.innerText = signaleticsCard[i].innerText;
-        //         descriptionModal.innerText = longDescriptionCard[i].innerText;
-        //         imgModal.src = imgCard[i].src;
-
-        //         console.log(i);
-        //         console.log(nameModal.innerText, signaleticsModal.innerText, descriptionModal.innerText);
-        //     })
-        // }
     }
 
     // **** Create a character ****
 
     function create() {
-
         document.querySelector("#addBtn").addEventListener("click", async () => {
             const values = allVal.map(({value}) => value.trim());
             const [name, shortDescription, description] = values;
@@ -115,7 +93,62 @@
     // **** Edit a Character ****
 
     function edit() {
-        
+        //const editButton = document.querySelectorAll(".btnEdit");
+        const changeButton = document.querySelectorAll("#changeBtn");
+
+        const nameCard = document.getElementsByClassName("name");
+        const signaleticsCard = document.getElementsByClassName("signaletics");
+        const longDescriptionCard = document.getElementsByClassName("description");
+        //const imgCard = document.getElementsByClassName("image");
+
+        Array.from(document.querySelectorAll("btnEdit")).forEach((button, i) => {
+            let editName = document.getElementById("editName");
+            let editSignalitics = document.getElementById("editSignaletics");
+            let editDescription = document.getElementById("editDescription");
+
+            editName.value = nameCard[i].textContent;
+            editSignalitics.value = signaleticsCard[i].textContent;
+            longDescriptionCard.textContent = editDescription[i].textContent;
+
+            changeButton.addEventListener("click", async () => {
+                const editAdd = Array.from(document.getElementsByClassName("edits"));
+                const newValues = editAdd.map(({value}) => value.trim());
+
+                newValues[3] = cut;
+
+                if(newValues.some((value) => value === "")) {
+                    alert("Please, don't leave an empty input!");
+                    return;
+                }
+                else {
+                    const [name, shortDescription, description, image] = newValues;
+                    const id = characterId[i];
+
+                    try {
+                        const rep = await fetch(`https://character-database.becode.xyz/characters/${id}`, {
+                            method : "PUT",
+                            headers : {
+                                "Content-Type": "application/json",
+                            },
+
+                            body : JSON.stringify({
+                                name,
+                                shortDescription,
+                                description,
+                                image,
+                            }),
+                        });
+
+                        const editChar = await rep.json();
+                        console.log(editChar);
+                        location.reload();
+                        
+                    }catch(error) {
+                        console.error(error);
+                    }
+                }
+            })
+        })
     }
 
     // **** Erased a character ****    
@@ -170,12 +203,9 @@
 
     apiChar.then(data => {
         viewCharacter(data);
+        blind();
         create();
         edit();
         erased();
-    })
-
-    apiChar.then(() => {
-        blind();
     })
 })();
