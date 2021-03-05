@@ -18,8 +18,7 @@ This is a project carried out as part of the "Junior Web Developer" training in 
 https://github.com/becodeorg/LIE-Jepsen-4.27/tree/master/02-the-hills/01-javascript/02-character-manager
 
 ## Languages uses.
-HTML.
-Bootstrap.
+HTML/Bootstrap.
 JavaScript.
 CSS.
 
@@ -30,7 +29,7 @@ Richard Denys.
 ## Project links.
 Web Github: https://github.com/AscelineHogge/character-manager-js
 
-Web link: In Progress
+Web link: https://ascelinehogge.github.io/character-manager-js/
 
 ## Example.
 https://ldolne.github.io/character-manager/
