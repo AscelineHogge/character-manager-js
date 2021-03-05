@@ -101,7 +101,7 @@
         const longDescriptionCard = document.getElementsByClassName("description");
         //const imgCard = document.getElementsByClassName("image");
 
-        Array.from(document.querySelectorAll("btnEdit")).forEach((button, i) => {
+        Array.from(document.querySelectorAll(".btnEdit")).forEach((button, i) => {
             let editName = document.getElementById("editName");
             let editSignalitics = document.getElementById("editSignaletics");
             let editDescription = document.getElementById("editDescription");
@@ -142,7 +142,7 @@
                         const editChar = await rep.json();
                         console.log(editChar);
                         location.reload();
-                        
+
                     }catch(error) {
                         console.error(error);
                     }
