@@ -60,7 +60,7 @@
           possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam
           repellat.</p>
         <div class="text-center">
-          <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+          <button type="button" class="btn btn-outline-primary addBtn" data-toggle="modal" data-target="#modalCreate">
             Create your Character!
           </button>
         </div>
@@ -73,7 +73,7 @@
         <div class="card h-100">
           <img class="card-img-top image" alt="">
           <div class="card-body">
-            <button type="button" class="btn btn-outline-secondary card" data-toggle="modal"
+            <button type="button" class="btn btn-outline-secondary cardBtn" data-toggle="modal"
               data-target="#exampleModal">[ ]</button>
             <h4 class="card-title name">Card title</h4>
             <p class="card-text signaletics">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse
@@ -83,7 +83,7 @@
           </div>
           <div class="card-footer">
             <button type="button" class="btn btn-outline-primary btnEdit" data-toggle="modal"
-              data-target="#exampleModal">Edit</button>
+              data-target="#modalEdit">Edit</button>
             <button type="button" class="btn btn-outline-danger btnDelete">Delete</button>
           </div>
         </div>
@@ -118,6 +118,93 @@
     </div>
     <!-- /.row -->
 
+    <!-- Modal Edit-->
+
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Edit a Character</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form action="#" method="post">
+              <div class="form-group">
+                <label for="inputName">Name: </label>
+                <input type="text" class="formCreateEdit edits" id="editName" placeholder="Enter the name"></input>
+              </div>
+
+              <div class="form-group">
+                <label for="inputSignaletics">Short Description: </label>
+                <input type="text" class="formCreateEdit edits" id="editSignaletics"
+                  placeholder="Enter a short description about this awesome character!">
+              </div>
+
+              <div class="form-group">
+                <label for="inputDescription">Description: </label>
+                <input type="text" class="formCreateEdit edits" id="editDescription"
+                  placeholder="Enter the whole backstory here!">
+              </div>
+
+              <div class="mb-3">
+                <label for="inputImg" class="formCreateEdit" accept=".jpg, .jpeg, .png">Image</label>
+                <input class="formCreateEdit edits" type="file" id="editImg">
+              </div>
+
+              <div class="actions">
+                <button type="button" id="changeBtn">Change</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- Modal Create -->
+
+    <div class="modal fade" id="modalCreate" tabindex="-1" aria-labelledby="modalCreateLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title">Create a Character</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form action="#" method="post">
+              <div class="form-group">
+                <label for="inputName">Name: </label>
+                <input type="text" class="formCreate" id="inputName" placeholder="Enter the name">
+              </div>
+
+              <div class="form-group">
+                <label for="inputSignaletics">Short Description: </label>
+                <input type="text" class="formCreate" id="inputSignaletics"
+                  placeholder="Enter a short description about this awesome character!">
+              </div>
+
+              <div class="form-group">
+                <label for="inputDescription">Description: </label>
+                <input type="text" class="formCreate" id="inputDescription"
+                  placeholder="Enter the whole backstory here!">
+              </div>
+
+              <div class="mb-3">
+                <label for="inputImg" class="formCreate" accept=".jpg, .jpeg, .png">Image</label>
+                <input class="formCreate" type="file" id="inputImg">
+              </div>
+
+              <div class="actions">
+                <button type="button" id="addBtn">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- /.container -->
 

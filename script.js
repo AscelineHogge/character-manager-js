@@ -2,6 +2,7 @@
     //   **** Get api and show elements ****
 
     const tabId = new Array();
+    const allVal = Array.from(document.querySelectorAll("input"));
 
     // **** Fetch our API ****
 
@@ -16,8 +17,6 @@
             console.error(error);
         }
     }
-
-    let apiChar = fetchCharacter();
 
     // **** Display Character ****
 
@@ -40,57 +39,117 @@
         console.log(tabId);
     }
 
-    apiChar.then(data => {
-        viewCharacter(data);
-        console.log(data);
-    })
-
     // **** View Heroes ****
 
     function blind() {
-        const buttonView = document.getElementsByClassName("card");
+        const buttonView = document.getElementsByClassName("cardBtn");
 
         const nameCard = document.getElementsByClassName("name");
         const signaleticsCard = document.getElementsByClassName("signaletics");
         const longDescriptionCard = document.getElementsByClassName("description");
         const imgCard = document.getElementsByClassName("image");
 
-        for (let i = 0; i < buttonView.length; i++) {
-            buttonView[i].addEventListener('click', function () {
+        Array.from(document.querySelectorAll(".cardBtn")).forEach((btn, i) => {
+            btn.addEventListener("click", () => {
+                let nameModal = document.querySelector(".modal-title");
+                let signaleticsModal = document.querySelector(".signaleticsModal");
+                let descriptionModal = document.querySelector(".cardModal");
+                let imgModal = document.querySelector(".imgModal");
 
-                let modalName = document.getElementById("exampleModalLabel");
-                let modalShortDescription = document.getElementById("signaletics-modal");
-                let modalLongDescription = document.getElementById("des-modal");
-                let modalImage = document.getElementById("img-modal");
-
-                modalName.innerText = nameCard[i].innerText;
-                modalShortDescription.innerText = signaleticsCard[i].innerText;
-                modalLongDescription.innerText = longDescriptionCard[i].innerText;
-                modalImage.src = imgCard[i].src;
-            });
-        }
-
-        // for(let i = 0; i > buttonView.length; i++) {
-        //     buttonView[i].addEventListener("click", () => {
-
-        //         let nameModal = document.querySelector(".modal-title");
-        //         let signaleticsModal = document.querySelector(".signaleticsModal");
-        //         let descriptionModal = document.querySelector(".cardModal");
-        //         let imgModal = document.querySelector(".imgModal");
-
-        //         nameModal.innerText = nameCard[i].innerText;
-        //         signaleticsModal.innerText = signaleticsCard[i].innerText;
-        //         descriptionModal.innerText = longDescriptionCard[i].innerText;
-        //         imgModal.src = imgCard[i].src;
-
-        //         console.log(nameModal, signaleticsModal, descriptionModal);
-        //     })
-        // }
+                nameModal.innerText = nameCard[i].innerText;
+                signaleticsModal.innerText = signaleticsCard[i].innerText;
+                descriptionModal.innerText = longDescriptionCard[i].innerText;
+                imgModal.src = imgCard[i].src;
+            })
+        });
     }
 
-    apiChar.then(() => {
-        blind();
-    })
+    // **** Create a character ****
+
+    function create() {
+        document.querySelector("#addBtn").addEventListener("click", async () => {
+            const values = allVal.map(({ value }) => value.trim());
+            const [name, shortDescription, description] = values;
+            const post = await fetch("https://character-database.becode.xyz/characters", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name,
+                    shortDescription,
+                    description,
+                    image,
+                })
+            })
+            document.location.reload();
+
+            if (!post.ok) {
+                console.error(post.status);
+            }
+        })
+    }
+
+    // **** Edit a Character ****
+
+    function edit() {
+        //const editButton = document.querySelectorAll(".btnEdit");
+        const changeButton = document.querySelectorAll("#changeBtn");
+
+        const nameCard = document.getElementsByClassName("name");
+        const signaleticsCard = document.getElementsByClassName("signaletics");
+        const longDescriptionCard = document.getElementsByClassName("description");
+        //const imgCard = document.getElementsByClassName("image");
+
+        Array.from(document.querySelectorAll("btnEdit")).forEach((button, i) => {
+            let editName = document.getElementById("editName");
+            let editSignalitics = document.getElementById("editSignaletics");
+            let editDescription = document.getElementById("editDescription");
+
+            editName.value = nameCard[i].textContent;
+            editSignalitics.value = signaleticsCard[i].textContent;
+            longDescriptionCard.textContent = editDescription[i].textContent;
+
+            changeButton.addEventListener("click", async () => {
+                const editAdd = Array.from(document.getElementsByClassName("edits"));
+                const newValues = editAdd.map(({ value }) => value.trim());
+
+                newValues[3] = cut;
+
+                if (newValues.some((value) => value === "")) {
+                    alert("Please, don't leave an empty input!");
+                    return;
+                }
+                else {
+                    const [name, shortDescription, description, image] = newValues;
+                    const id = characterId[i];
+
+                    try {
+                        const rep = await fetch(`https://character-database.becode.xyz/characters/${id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+
+                            body: JSON.stringify({
+                                name,
+                                shortDescription,
+                                description,
+                                image,
+                            }),
+                        });
+
+                        const editChar = await rep.json();
+                        console.log(editChar);
+                        location.reload();
+
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            })
+        })
+    }
 
     // **** Erased a character ****    
 
@@ -129,7 +188,24 @@
         })
     }
 
-    apiChar.then(() => {
+    let apiChar = fetchCharacter();
+    let image = "";
+    document.querySelector("#inputImg").addEventListener("change", (event) => {
+        const fileList = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            image = reader.result.replace('data:', '').replace(/^.+,/, '');
+            console.log(image);
+        };
+        reader.readAsDataURL(fileList);
+    });
+
+    apiChar.then(data => {
+        viewCharacter(data);
+        blind();
+        create();
+        edit();
         erased();
     })
 })();
